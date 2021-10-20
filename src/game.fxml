@@ -1,14 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="Game"
-            prefHeight="400.0" prefWidth="600.0">
-    <GridPane fx:id="gridPane" />
+<AnchorPane fx:id="gamePane" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Game">
+    <GridPane fx:id="gridPane" hgap="1" layoutX="20.0" layoutY="75.0" prefHeight="300" prefWidth="300" vgap="1" />
+   <Button fx:id="compRackBtn" layoutX="18.0" layoutY="42.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="155.0" text="Show Computer's Rack" textFill="#0a0a0a" />
+   <Button fx:id="playBtn" layoutX="320.0" layoutY="647.0" mnemonicParsing="false" text="Play" />
+   <Button fx:id="passBtn" layoutX="371.0" layoutY="647.0" mnemonicParsing="false" text="Pass" />
+   <Button fx:id="clearBtn" layoutX="427.0" layoutY="647.0" mnemonicParsing="false" text="Clear" />
+   <Button fx:id="swapBtn" layoutX="482.0" layoutY="647.0" mnemonicParsing="false" text="Swap" />
+   <Label layoutX="640.0" layoutY="75.0" text="Words Played:" />
+   <Label fx:id="compLastScoreLabel" layoutX="641.0" layoutY="363.0" prefHeight="25.0" prefWidth="145.0" text="Computer last score:">
+      <font>
+         <Font size="16.0" />
+      </font></Label>
+   <Label fx:id="compTotalScoreLabel" layoutX="641.0" layoutY="399.0" text="Computer total score:">
+      <font>
+         <Font size="16.0" />
+      </font></Label>
+   <Label fx:id="yourLastScoreLabel" layoutX="641.0" layoutY="429.0" text="Your last score:">
+      <font>
+         <Font size="16.0" />
+      </font></Label>
+   <Label fx:id="tilesLeftLabel" layoutX="641.0" layoutY="487.0" text="Tiles left:">
+      <font>
+         <Font size="16.0" />
+      </font></Label>
+   <Label fx:id="yourTotalScoreLabel" layoutX="641.0" layoutY="459.0" text="Your  total score">
+      <font>
+         <Font size="16.0" />
+      </font></Label>
+   <Label layoutX="829.0" layoutY="367.0" text="0" />
+   <Label layoutX="829.0" layoutY="399.0" text="0" />
+   <Label layoutX="829.0" layoutY="429.0" text="0" />
+   <Label layoutX="829.0" layoutY="459.0" text="0" />
+   <Label layoutX="829.0" layoutY="487.0" text="100" />
+   <Button fx:id="pb1" layoutX="58.0" layoutY="647.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="A" />
+   <Button fx:id="pb2" layoutX="89.0" layoutY="647.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="G" />
+   <Button fx:id="pb3" layoutX="120.0" layoutY="647.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="F" />
+   <Button fx:id="pb4" layoutX="151.0" layoutY="647.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="E" />
+   <Button fx:id="pb5" layoutX="182.0" layoutY="647.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="D" />
+   <Button fx:id="pb6" layoutX="213.0" layoutY="647.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="C" />
+   <Button fx:id="pb7" layoutX="245.0" layoutY="647.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="B" />
+   <Button fx:id="cb1" layoutX="229.0" layoutY="43.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="A" />
+   <Button fx:id="cb2" layoutX="418.0" layoutY="43.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="G" />
+   <Button fx:id="cb3" layoutX="387.0" layoutY="43.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="F" />
+   <Button fx:id="cb4" layoutX="325.0" layoutY="43.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="E" />
+   <Button fx:id="cb5" layoutX="356.0" layoutY="43.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="D" />
+   <Button fx:id="cb6" layoutX="291.0" layoutY="43.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="C" />
+   <Button fx:id="cb7" layoutX="260.0" layoutY="43.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="B" />
+   <ScrollPane fx:id="playedWordsScroll" layoutX="640.0" layoutY="92.0" prefHeight="261.0" prefWidth="195.0">
+     <content>
+       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="243.0" prefWidth="194.0" />
+     </content>
+   </ScrollPane>
 </AnchorPane>
