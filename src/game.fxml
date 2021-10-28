@@ -40,13 +40,13 @@
    <Label layoutX="829.0" layoutY="429.0" text="0" />
    <Label layoutX="829.0" layoutY="459.0" text="0" />
    <Label layoutX="829.0" layoutY="487.0" text="100" />
-   <Button fx:id="pb1" layoutX="58.0" layoutY="647.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="A" />
-   <Button fx:id="pb2" layoutX="89.0" layoutY="647.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="G" />
-   <Button fx:id="pb3" layoutX="120.0" layoutY="647.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="F" />
+   <Button fx:id="pb1" layoutX="58.0" layoutY="647.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="S" />
+   <Button fx:id="pb2" layoutX="89.0" layoutY="647.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="O" />
+   <Button fx:id="pb3" layoutX="120.0" layoutY="647.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="N" />
    <Button fx:id="pb4" layoutX="151.0" layoutY="647.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="E" />
-   <Button fx:id="pb5" layoutX="182.0" layoutY="647.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="D" />
-   <Button fx:id="pb6" layoutX="213.0" layoutY="647.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="C" />
-   <Button fx:id="pb7" layoutX="245.0" layoutY="647.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="B" />
+   <Button fx:id="pb5" layoutX="182.0" layoutY="647.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="A" />
+   <Button fx:id="pb6" layoutX="213.0" layoutY="647.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="R" />
+   <Button fx:id="pb7" layoutX="245.0" layoutY="647.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="C" />
    <Button fx:id="cb1" layoutX="229.0" layoutY="43.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="A" />
    <Button fx:id="cb2" layoutX="418.0" layoutY="43.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="G" />
    <Button fx:id="cb3" layoutX="387.0" layoutY="43.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="F" />
