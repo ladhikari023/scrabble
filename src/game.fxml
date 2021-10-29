@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.text.Font?>
@@ -35,11 +36,11 @@
       <font>
          <Font size="16.0" />
       </font></Label>
-   <Label layoutX="829.0" layoutY="367.0" text="0" />
-   <Label layoutX="829.0" layoutY="399.0" text="0" />
-   <Label layoutX="829.0" layoutY="429.0" text="0" />
-   <Label layoutX="829.0" layoutY="459.0" text="0" />
-   <Label layoutX="829.0" layoutY="487.0" text="100" />
+   <Label fx:id="compLastScore" layoutX="829.0" layoutY="367.0" text="0" />
+   <Label fx:id="compTotalScore" layoutX="829.0" layoutY="399.0" text="0" />
+   <Label fx:id="playerScore" layoutX="829.0" layoutY="429.0" text="0" />
+   <Label fx:id="pllayerTotalScore" layoutX="829.0" layoutY="459.0" text="0" />
+   <Label fx:id="tilesCount" layoutX="829.0" layoutY="487.0" text="100" />
    <Button fx:id="pb1" layoutX="58.0" layoutY="647.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="S" />
    <Button fx:id="pb2" layoutX="89.0" layoutY="647.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="O" />
    <Button fx:id="pb3" layoutX="120.0" layoutY="647.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="N" />
@@ -59,4 +60,7 @@
        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="243.0" prefWidth="194.0" />
      </content>
    </ScrollPane>
+   <Label fx:id="blankTileLabel" layoutX="81.0" layoutY="625.0" text="Value For Your Blank Tile: " />
+   <TextField fx:id="blankTileTextField" layoutX="229.0" layoutY="621.0" prefHeight="26.0" prefWidth="31.0" />
+   <Button fx:id="blankTileEnterBtn" layoutX="284.0" layoutY="621.0" mnemonicParsing="false" text="Enter" />
 </AnchorPane>
