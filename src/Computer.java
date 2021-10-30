@@ -1,3 +1,7 @@
+/*
+    Class for computer player
+    Has two parameters boolean and int, returns the turn of computer and score respectively
+ */
 public class Computer {
     private Boolean isTurn;
     private int score;

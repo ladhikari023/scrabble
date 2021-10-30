@@ -1,3 +1,9 @@
+/**
+ * @author: Laxman Adhikari
+ * This is the main function of our project 3: Scrabble
+ * fxml containing the layout of the game is loaded
+ */
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

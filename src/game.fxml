@@ -11,9 +11,7 @@
 <AnchorPane fx:id="gamePane" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Game">
     <GridPane fx:id="gridPane" hgap="1" layoutX="20.0" layoutY="75.0" prefHeight="300" prefWidth="300" vgap="1" />
    <Button fx:id="compRackBtn" layoutX="18.0" layoutY="42.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="155.0" text="Show Computer's Rack" textFill="#0a0a0a" />
-   <Button fx:id="playBtn" layoutX="320.0" layoutY="647.0" mnemonicParsing="false" text="Play" />
-   <Button fx:id="passBtn" layoutX="371.0" layoutY="647.0" mnemonicParsing="false" text="Pass" />
-   <Button fx:id="clearBtn" layoutX="427.0" layoutY="647.0" mnemonicParsing="false" text="Clear" />
+   <Button fx:id="playBtn" layoutX="427.0" layoutY="647.0" mnemonicParsing="false" text="Play" />
    <Button fx:id="swapBtn" layoutX="482.0" layoutY="647.0" mnemonicParsing="false" text="Swap" />
    <Label layoutX="640.0" layoutY="75.0" text="Words Played:" />
    <Label fx:id="compLastScoreLabel" layoutX="641.0" layoutY="363.0" prefHeight="25.0" prefWidth="145.0" text="Computer last score:">

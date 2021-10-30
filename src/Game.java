@@ -1,3 +1,18 @@
+/*
+    This is the FXML loader class of game.fxml
+    Main logics of the game are written here in this class
+    First I have read the dictionary.txt required for the program
+    I have all the labels and text fields on the respective fields as shown in the website
+    There are three methods which are responsible for the layout of the game
+    I used GridPane to make the crossword like box of size 15/15
+    I created random tiles from the tile bag of 100 tiles
+    Game runs perfectly for player but doesn't run quite well for the computer
+    I have used functions to check the validity of the tile placement by user
+    If the tile placement is good and the word formed in the process are in the dictionary, player gets point.
+    updateScore() method is responsible for updating the user's score
+    The game is continued till there is a possibility of play
+ */
+
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -12,13 +27,11 @@ import javafx.scene.text.Font;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Game {
 
+    // Accessing nodes from fxml to controller class
     @FXML
     private AnchorPane gamePane;
     @FXML
@@ -29,10 +42,6 @@ public class Game {
     public Button compRackBtn;
     @FXML
     public Button playBtn;
-    @FXML
-    public Button passBtn;
-    @FXML
-    public Button clearBtn;
     @FXML
     public Button swapBtn;
     @FXML
@@ -74,28 +83,36 @@ public class Game {
     public Button cb6;
     public Button cb7;
 
-    private final ArrayList<int[]> cellList = new ArrayList<>();
-    private final ArrayList<Button> clickedBtn = new ArrayList<>();
-    private final ArrayList<String> validWords = new ArrayList<>();
-    private final ArrayList<Button> playedButtons = new ArrayList<>();
-    private final ArrayList<Tile> currentlyPlayingTiles = new ArrayList<>();
-    private final ArrayList<StackPane> stackPanes = new ArrayList<>();
-    private ArrayList<String> allPlayedWords = new ArrayList<>();
-    private final Player player = new Player(true);
-    private final Computer computer = new Computer(false);
-    private final ScoredWords scoredWords = new ScoredWords();
-    private final int sizeOfGrid = 15;
-    private int tileBag = 100 - 7 - 7;
-    private int blankCount = 0;
-    private boolean firstTurn = true;
-    private int playerTotalSum = 0;
+    // created variables to use in different functionality
+    private final ArrayList<int[]> cellList = new ArrayList<>(); // stores row and column of each cell
+    private final ArrayList<Button> clickedBtn = new ArrayList<>(); // The Tile we click to add in game is stored here
+    private final ArrayList<String> validWords = new ArrayList<>(); // all words from dictionary
+    private final ArrayList<Button> playedButtons = new ArrayList<>(); // all clicked buttons in one turn
+    private final ArrayList<Tile> currentlyPlayingTiles = new ArrayList<>(); // all tiles put into box in one turn
+    private final ArrayList<StackPane> stackPanes = new ArrayList<>(); // list of stackpanes holding tiles on them
+    private final ArrayList<Button> playerButtons = new ArrayList<>(); // rack of players tiles
+    private final ArrayList<Button> computerButtons = new ArrayList<>(); // rack of computer tiles
+    private final Player player = new Player(true); // instance of class player initialized with player's turn true
+    private final Computer computer = new Computer(false); // instance of class computer initialized with computer's turn false
+    private final ScoredWords scoredWords = new ScoredWords(); // class holding all the scored words
+    private final int sizeOfGrid = 15; // grid size
+    private int tileBag = 100 - 7 - 7; // initial tiles
+    private int blankCount = 0; // counting the blank tiles shown to user
+    private boolean firstTurn = true; // checking if its the first play of the game
+    private int playerTotalSum = 0; // total score of player
 
     String[] alphabets = {"A", "B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R",
-            "S","T","U","V","W","X","Y","Z",""};
+            "S","T","U","V","W","X","Y","Z",""};  // All alphabets used in the game
 
+    // Constructor
     public Game() {
     }
 
+    /*
+        background image is added to the AnchorPane
+        read dictionary and added all words to validWords
+        added all buttons to players and computers rack
+     */
     public void initialize() throws FileNotFoundException {
         BackgroundImage bgImage = new BackgroundImage(new Image("bg2.jpg", 900, 900, false, true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
@@ -117,8 +134,30 @@ public class Game {
         blankTileLabel.setVisible(false);
         blankTileTextField.setVisible(false);
         blankTileEnterBtn.setVisible(false);
+
+        playerButtons.add(pb1);
+        playerButtons.add(pb2);
+        playerButtons.add(pb3);
+        playerButtons.add(pb4);
+        playerButtons.add(pb5);
+        playerButtons.add(pb6);
+        playerButtons.add(pb7);
+
+        computerButtons.add(cb1);
+        computerButtons.add(cb2);
+        computerButtons.add(cb3);
+        computerButtons.add(cb4);
+        computerButtons.add(cb5);
+        computerButtons.add(cb6);
+        computerButtons.add(cb7);
+
+        for (int i = 0; i < playerButtons.size(); i++) {
+            playerButtons.get(i).setText(alphabets[getRandomNumber(0,alphabets.length-1)]);
+            computerButtons.get(i).setText(alphabets[getRandomNumber(0,alphabets.length-1)]);
+        }
     }
 
+    // generate cells of the grid using 2D array
     private void gridCellIndexes() {
         cellList.clear();
         for (int i = 0; i < sizeOfGrid; i++) {
@@ -141,7 +180,11 @@ public class Game {
         }
     }
 
-    //adding labels in each cell of grid pane
+    /*
+        added stackpanes in each cell of grid pane and added label with background
+        added background images in the appropriate cells of GridPane by constructing relevant 2d arrays
+        added on click listener property to each stackpanes of the cell
+     */
     private void addLabelOnGrid() throws NullPointerException {
         int[][] DL = {{0, 3}, {0, 11}, {2, 6}, {2, 8}, {3, 0}, {3, 7}, {3, 14}, {6, 2}, {6, 6},
                 {6, 8}, {6, 12}, {7, 3}, {7, 11}, {8, 2}, {8, 6}, {8, 8}, {8, 12}, {11, 0}, {11, 7},
@@ -151,7 +194,6 @@ public class Game {
                 {11, 11}, {12, 12}, {13, 13}};
         int[][] TW = {{0, 0}, {0, 7}, {0, 14}, {7, 0}, {7, 14}, {14, 0}, {14, 7}, {14, 14}};
         for (int i = 0; i < cellList.size(); i++) {
-            int valueOfCell = 1;
             int[] point = cellList.get(i);
             StackPane stackPane = new StackPane();
             Label label = new Label();
@@ -161,10 +203,8 @@ public class Game {
             label.setFont(new Font(25));
             if (checkPoint(point[0], point[1], DL)) {
                 label.setStyle("-fx-background-image: url(DL.png)");
-                valueOfCell = 2;
             } else if (checkPoint(point[0], point[1], TL)) {
                 label.setStyle("-fx-background-image: url(TL.png)");
-                valueOfCell = 3;
             } else if (checkPoint(point[0], point[1], DW)) {
                 label.setStyle("-fx-background-image: url(DW.png)");
             } else if (checkPoint(point[0], point[1], TW)) {
@@ -201,6 +241,7 @@ public class Game {
         }
     }
 
+    // checks if the cell row and column matches the special cells where background image needs to be placed
     private boolean checkPoint(int x, int y, int[][] arr) {
         for (int i = 0; i < arr.length; i++) {
             if (arr[i][0] == x && arr[i][1] == y) {
@@ -210,6 +251,7 @@ public class Game {
         return false;
     }
 
+    // returns node at specific row and column index of GridPane
     public Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
         Node result = null;
         ObservableList<Node> childrens = gridPane.getChildren();
@@ -224,6 +266,15 @@ public class Game {
         return result;
     }
 
+    /*
+        added on action listener for all player buttons/tiles
+        added on action listener for play button and swap button
+        calls validityCheck() method which returns an arraylist of strings
+        checks if all the strings/words lies in the dictionary
+        If exists, sets turn for computer.
+        If not, continue playing again
+        when swap button is clicked, all the player buttons are swaped to new sets of tiles
+     */
     private void startGame() {
         showWordsPlayed();
         if (player.getTurn()) {
@@ -278,7 +329,6 @@ public class Game {
                 }
             }
             if (allValid){
-                allPlayedWords.addAll(currentStringsList);
                 updateScore(currentStringsList);
                 showWordsPlayed();
                 player.setTurn(false);
@@ -292,7 +342,20 @@ public class Game {
             }
             startGame();
         });
+
+        swapBtn.setOnAction(event -> {
+            for (int i = 0; i < 7; i++) {
+                playerButtons.get(i).setText(alphabets[getRandomNumber(0,alphabets.length-1)]);
+                playerButtons.get(i).setVisible(true);
+                tileBag--;
+            }
+            tilesCount.setText(String.valueOf(tileBag));
+        });
     }
+
+    /*
+        returns arraylist of string of all the words formed as a result of placed tiles in the game board
+     */
     private ArrayList<String> getAllPlayedWords() {
         ArrayList<String> currentStrings = new ArrayList<>();
         int maxRow = 0, minRow = 14, maxCol = 0, minCol = 14;
@@ -414,6 +477,7 @@ public class Game {
         return currentStrings;
     }
 
+    // returns arraylist of string of all the words formed as a result of each vertical play
     private ArrayList<String> checkVertical(int minCol, int maxCol,int dRow) {
         ArrayList<String> strings = new ArrayList<>();
         for (int i = minCol; i <= maxCol; i++) {
@@ -455,6 +519,7 @@ public class Game {
         return strings;
     }
 
+    // returns arrayList of string of all the words formed as a result of each horizontal play
     private ArrayList<String> checkHorizontal(int minRow, int maxRow,int dCol) {
         ArrayList<String> strings = new ArrayList<>();
         for (int i = minRow; i <= maxRow; i++) {
@@ -497,7 +562,7 @@ public class Game {
         return strings;
     }
 
-
+    // replaces played tiles with new set of tiles
     private void extractTiles() {
         if (tileBag > 0) {
             for (int i = 0; i < playedButtons.size(); i++) {
@@ -522,6 +587,7 @@ public class Game {
         }
     }
 
+    // asks user to enter the value if blank tiles is shown
     private void askValueForBlank(String[] alphabets, int x) {
         blankTileLabel.setVisible(true);
         blankTileTextField.setVisible(true);
@@ -540,6 +606,7 @@ public class Game {
         });
     }
 
+    // reutrns a random number
     public int getRandomNumber(int min, int max) {
         return (int) ((Math.random() * (max - min)) + min);
     }
@@ -558,6 +625,7 @@ public class Game {
         playedButtons.clear();
     }
 
+    // binary search string on all the words from dictionary
     private int searchString(ArrayList<String> arr, String x)
     {
         int l = 0, r = arr.size() - 1;
@@ -574,6 +642,7 @@ public class Game {
         return -1;
     }
 
+    // updates score based on the words formed during the game play
     private void updateScore(ArrayList<String> stringList) {
         int sum = 0;
         for (String string:stringList
@@ -587,6 +656,7 @@ public class Game {
         playerTotalScore.setText(String.valueOf(playerTotalSum));
     }
 
+    // returns value of string from A to Z
     private int getValueOfString(char ch) {
         int value = 0;
         String string ="";
@@ -643,18 +713,48 @@ public class Game {
         return value;
     }
 
+    // logic to be added for computer to play. Not complete
     private void computerPlay() {
         // Functionality for computer to play the game
-        System.out.println("I played, Now your turn");
+        for (int i = 0; i < 15; i++) {
+            StackPane stackPane = (StackPane) getNodeByRowColumnIndex(i,i,gridPane);
+            if (stackPane.getChildren().size()>1){
+                int row = i,col = i;
+                System.out.println(i+" row"+ i+ " col");
+                while (true){
+                    stackPane = (StackPane) getNodeByRowColumnIndex(row-1,col,gridPane);
+                    if (stackPane.getChildren().size()>1){
+                        row--;
+                    }else{
+                        break;
+                    }
+                }
+                generateWord(row,col);
+            }
+        }
 
-
-        ArrayList<String> computerWordList = new ArrayList<>();
         //updateScore(computerWordList);
         player.setTurn(true);
         computer.setTurn(false);
         startGame();
     }
 
+    // generates word for computer to put on the game board
+    private void generateWord(int row,int col) {
+        for (int j = row; j < row+5; j++) {
+            StackPane stackPane = (StackPane) getNodeByRowColumnIndex(j,col,gridPane);
+
+            Label newLabel = new Label(computerButtons.get(getRandomNumber(0,7)).getText());
+            newLabel.setPrefSize(stackPane.getWidth(), stackPane.getHeight());
+            newLabel.setStyle("-fx-background-color: #e0e0b0");
+            newLabel.setFont(new Font(20));
+            newLabel.setAlignment(Pos.CENTER);
+
+            stackPane.getChildren().add(1,newLabel);
+        }
+    }
+
+    // shows all the played words in the scroll pane view
     private void showWordsPlayed() {
         playedWordsScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         playedWordsScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -663,16 +763,10 @@ public class Game {
         // Needs to show the played words in words list
     }
 
+    // shows grid
     private void showGrid(){
         gridCellIndexes();
         gridBuild();
         addLabelOnGrid();
     }
-    // ShowGrid
-    // Add functionality to multiply the words or letters score in special boxes
-    // ShowWords
-    // Add exchange letters functionality
-    // CheckDrag
-    // Add Computer Logic to play the best word possible
-    // ShowScore - update the score everytime user hits the enter/play btn
 }

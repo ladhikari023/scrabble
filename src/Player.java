@@ -1,3 +1,8 @@
+/*
+    Class for human player
+    Has three parameters String, boolean and int, returns the name of user, turn of player and score respectively
+ */
+
 public class Player {
     private String name;
     private Boolean isTurn;
