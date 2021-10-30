@@ -39,7 +39,7 @@
    <Label fx:id="compLastScore" layoutX="829.0" layoutY="367.0" text="0" />
    <Label fx:id="compTotalScore" layoutX="829.0" layoutY="399.0" text="0" />
    <Label fx:id="playerScore" layoutX="829.0" layoutY="429.0" text="0" />
-   <Label fx:id="pllayerTotalScore" layoutX="829.0" layoutY="459.0" text="0" />
+   <Label fx:id="playerTotalScore" layoutX="829.0" layoutY="459.0" text="0" />
    <Label fx:id="tilesCount" layoutX="829.0" layoutY="487.0" text="100" />
    <Button fx:id="pb1" layoutX="58.0" layoutY="647.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="S" />
    <Button fx:id="pb2" layoutX="89.0" layoutY="647.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="O" />

@@ -10,11 +10,11 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
-import java.awt.image.AreaAveragingScaleFilter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Game {
@@ -51,6 +51,11 @@ public class Game {
     private TextField blankTileTextField;
     @FXML
     private Button blankTileEnterBtn;
+    public Label playerScore;
+    public Label compTotalScore;
+    public Label playerTotalScore;
+    public Label tilesCount;
+    public Label compLastScore;
 
     @FXML
     public Button pb1;
@@ -74,15 +79,19 @@ public class Game {
     private final ArrayList<String> validWords = new ArrayList<>();
     private final ArrayList<Button> playedButtons = new ArrayList<>();
     private final ArrayList<Tile> currentlyPlayingTiles = new ArrayList<>();
-    private final ArrayList<Tile> allTiles = new ArrayList<>();
     private final ArrayList<StackPane> stackPanes = new ArrayList<>();
+    private ArrayList<String> allPlayedWords = new ArrayList<>();
     private final Player player = new Player(true);
     private final Computer computer = new Computer(false);
     private final ScoredWords scoredWords = new ScoredWords();
     private final int sizeOfGrid = 15;
     private int tileBag = 100 - 7 - 7;
     private int blankCount = 0;
+    private boolean firstTurn = true;
+    private int playerTotalSum = 0;
 
+    String[] alphabets = {"A", "B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R",
+            "S","T","U","V","W","X","Y","Z",""};
 
     public Game() {
     }
@@ -244,12 +253,48 @@ public class Game {
         }
 
         playBtn.setOnAction(event -> {
-            player.setTurn(false);
-            checkValidity();
+            ArrayList<String> currentStringsList = getAllPlayedWords();
+            System.out.println(currentStringsList);
+            if (!firstTurn && currentStringsList.size()==1 && currentStringsList.get(0).length()==currentlyPlayingTiles.size()) rePlay();
+            boolean midPlayed = true;
+            if (firstTurn){
+                midPlayed = false;
+                for (Tile tile:currentlyPlayingTiles
+                     ) {
+                    if (tile.getRow()==7 && tile.getCol()==7){
+                        midPlayed = true;
+                    }
+                }
+                if (!midPlayed) rePlay();
+                else firstTurn = false;
+            }
+
+            boolean allValid = true;
+            for (String word:currentStringsList
+                 ) {
+                int result = searchString(validWords,word.toLowerCase());
+                if (result==-1){
+                    allValid = false;
+                }
+            }
+            if (allValid){
+                allPlayedWords.addAll(currentStringsList);
+                updateScore(currentStringsList);
+                showWordsPlayed();
+                player.setTurn(false);
+                computer.setTurn(true);
+                extractTiles();
+                playedButtons.clear();
+                stackPanes.clear();
+                currentlyPlayingTiles.clear();
+            }else{
+                rePlay();
+            }
+            startGame();
         });
     }
-    ArrayList<String> strings = new ArrayList<>();
-    private void checkValidity() {
+    private ArrayList<String> getAllPlayedWords() {
+        ArrayList<String> currentStrings = new ArrayList<>();
         int maxRow = 0, minRow = 14, maxCol = 0, minCol = 14;
         for (Tile tile : currentlyPlayingTiles
         ) {
@@ -260,7 +305,6 @@ public class Game {
         }
         // horizontal case
         if (maxCol-minCol>=1){
-            ArrayList<String> strings = new ArrayList<>();
             int row = minRow;
             int col = minCol;
             String string = "";
@@ -283,12 +327,11 @@ public class Game {
                     break;
                 }
             }
-            strings.add(string);
-            strings.addAll(checkVertical(minCol,maxCol,row));
+            if (string.length()>1) currentStrings.add(string.toLowerCase());
+            currentStrings.addAll(checkVertical(minCol,maxCol,row));
         }
         // vertical case
         if (maxRow-minRow>=1){
-            ArrayList<String> strings = new ArrayList<>();
             int startRow = 0;
             int row = minRow;
             int col = minCol;
@@ -311,8 +354,8 @@ public class Game {
                     break;
                 }
             }
-            strings.add(string);
-            strings.addAll(checkHorizontal(minRow,maxRow,col));
+            if (string.length()>1) currentStrings.add(string.toLowerCase());
+            currentStrings.addAll(checkHorizontal(minRow,maxRow,col));
         }
         // Adding single letter case
         if (maxCol==minCol && maxRow==minRow){
@@ -341,7 +384,7 @@ public class Game {
                     break;
                 }
             }
-            if (string.length()>1) strings.add(string.toLowerCase());
+            if (string.length()>1) currentStrings.add(string.toLowerCase());
 
             string = "";
 
@@ -366,10 +409,9 @@ public class Game {
                     break;
                 }
             }
-            if (string.length()>1) strings.add(string.toLowerCase());
+            if (string.length()>1) currentStrings.add(string.toLowerCase());
         }
-        currentlyPlayingTiles.clear();
-        extractTiles();
+        return currentStrings;
     }
 
     private ArrayList<String> checkVertical(int minCol, int maxCol,int dRow) {
@@ -408,11 +450,8 @@ public class Game {
                 if (string.length() > 1) {
                     strings.add(string.toLowerCase());
                 }
-            }else{
-                System.out.println("yes sir");
             }
         }
-        System.out.println(strings + " check vertical");
         return strings;
     }
 
@@ -460,12 +499,10 @@ public class Game {
 
 
     private void extractTiles() {
-        String[] alphabets = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W",
-                "X", "Y", "Z", ""};
         if (tileBag > 0) {
             for (int i = 0; i < playedButtons.size(); i++) {
                 int rand = getRandomNumber(0, alphabets.length-1);
-                if (blankCount > 2) {
+                if (blankCount > 2 && alphabets.length==27) {
                     String[] newAlphabets = new String[alphabets.length - 1];
                     for (int j = 0; j < alphabets.length-1; j++) {
                         newAlphabets[j] = alphabets[j];
@@ -480,6 +517,7 @@ public class Game {
                 }
                 playedButtons.get(i).setVisible(true);
                 tileBag--;
+                tilesCount.setText(String.valueOf(tileBag));
             }
         }
     }
@@ -492,6 +530,7 @@ public class Game {
         blankTileEnterBtn.setOnAction(event -> {
             boolean isValid = false;
             for (int i = 0; i < alphabets.length - 2; i++) {
+                System.out.println(blankTileTextField.getText() + " and "+alphabets[i]);
                 if (blankTileTextField.getText().equals(alphabets[i])) {
                     isValid = true;
                     break;
@@ -513,6 +552,7 @@ public class Game {
             playedButtons.get(i).setVisible(true);
             stackPanes.get(i).getChildren().remove(1);
         }
+        player.setTurn(true);
         currentlyPlayingTiles.clear();
         stackPanes.clear();
         playedButtons.clear();
@@ -534,15 +574,82 @@ public class Game {
         return -1;
     }
 
-    private void updateScore() {
+    private void updateScore(ArrayList<String> stringList) {
+        int sum = 0;
+        for (String string:stringList
+             ) {
+            for (int i = 0; i < string.length(); i++) {
+                sum += getValueOfString(string.charAt(i));
+            }
+        }
+        playerTotalSum += sum;
+        playerScore.setText(String.valueOf(sum));
+        playerTotalScore.setText(String.valueOf(playerTotalSum));
+    }
 
+    private int getValueOfString(char ch) {
+        int value = 0;
+        String string ="";
+        string+=ch;
+
+        switch (string){
+            case "a":
+            case "e":
+                value = 4;
+            break;
+            case "b":
+            case "d":
+            case "f":
+                value=6;
+                break;
+            case "c":
+            case "g":
+                value=7;
+                break;
+            case "h":
+            case "l":
+            case "p":
+                value+=6;
+                break;
+            case "i":
+            case "o":
+            case "r":
+            case "s":
+                value+=4;
+                break;
+            case "j":
+            case "m":
+            case "n":
+            case "t":
+                value+=5;
+                break;
+            case "k":
+            case "u":
+            case "y":
+                value+=7;
+                break;
+            case "q":
+            case "z":
+                value+=10;
+                break;
+            case "v":
+            case "w":
+                value+=8;
+                break;
+            case "x": value+=9;
+                break;
+            default: value = 0;
+        }
+        return value;
     }
 
     private void computerPlay() {
         // Functionality for computer to play the game
         System.out.println("I played, Now your turn");
 
-        updateScore();
+
+        ArrayList<String> computerWordList = new ArrayList<>();
+        //updateScore(computerWordList);
         player.setTurn(true);
         computer.setTurn(false);
         startGame();
@@ -551,6 +658,7 @@ public class Game {
     private void showWordsPlayed() {
         playedWordsScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         playedWordsScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
 
         // Needs to show the played words in words list
     }
